@@ -49,7 +49,7 @@ export async function GET() {
       <p>The MedJobs India API allows partner companies to access medical job listings in real-time. This API is designed for business partnerships where partners can integrate our job listings into their platforms.</p>
 
       <h3>Base URL</h3>
-      <code>https://your-domain.com/api</code>
+      <code>https://medical-job-five.vercel.app/api</code>
 
       <h3>Authentication</h3>
       <p>All Partner API requests require an API key to be included in the request header:</p>
@@ -89,7 +89,7 @@ export async function GET() {
       </table>
 
       <h3>Example Request</h3>
-      <pre><code>curl -X GET "https://your-domain.com/api/partners/jobs?page=1&limit=10" \\
+      <pre><code>curl -X GET "https://medical-job-five.vercel.app/api/partners/jobs?page=1&limit=10" \\
   -H "X-API-Key: demo-api-key"</code></pre>
 
       <h3>Example Response</h3>
