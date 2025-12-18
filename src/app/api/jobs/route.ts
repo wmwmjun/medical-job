@@ -2,6 +2,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAllJobs, searchJobs, createJob } from '@/lib/dataStore';
 import { JobCreateRequest } from '@/types';
 
+// CORS headers
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+// OPTIONS /api/jobs - Handle CORS preflight requests
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/jobs - Get all jobs or search jobs
 export async function GET(request: NextRequest) {
   try {
@@ -27,11 +42,14 @@ export async function GET(request: NextRequest) {
       jobs = getAllJobs(true); // Only active jobs for public API
     }
 
-    return NextResponse.json({
-      success: true,
-      data: jobs,
-      timestamp: new Date().toISOString(),
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        data: jobs,
+        timestamp: new Date().toISOString(),
+      },
+      { headers: corsHeaders }
+    );
   } catch (error) {
     console.error('Error fetching jobs:', error);
     return NextResponse.json(
@@ -40,7 +58,7 @@ export async function GET(request: NextRequest) {
         error: 'Failed to fetch jobs',
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
@@ -74,7 +92,7 @@ export async function POST(request: NextRequest) {
             error: `Missing required field: ${field}`,
             timestamp: new Date().toISOString(),
           },
-          { status: 400 }
+          { status: 400, headers: corsHeaders }
         );
       }
     }
@@ -87,7 +105,7 @@ export async function POST(request: NextRequest) {
         data: newJob,
         timestamp: new Date().toISOString(),
       },
-      { status: 201 }
+      { status: 201, headers: corsHeaders }
     );
   } catch (error) {
     console.error('Error creating job:', error);
@@ -97,7 +115,7 @@ export async function POST(request: NextRequest) {
         error: 'Failed to create job',
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
