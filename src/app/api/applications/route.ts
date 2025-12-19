@@ -4,7 +4,7 @@ import {
   getApplicationsByJobId,
   getApplicationsByStatus,
   createApplication,
-} from '@/lib/dataStore';
+} from '@/lib/kvDataStore';
 import { ApplicationStatus } from '@/types';
 
 // CORS headers
@@ -32,11 +32,11 @@ export async function GET(request: NextRequest) {
     let applications;
 
     if (jobId) {
-      applications = getApplicationsByJobId(jobId);
+      applications = await getApplicationsByJobId(jobId);
     } else if (status) {
-      applications = getApplicationsByStatus(status);
+      applications = await getApplicationsByStatus(status);
     } else {
-      applications = getAllApplications();
+      applications = await getAllApplications();
     }
 
     return NextResponse.json(
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const application = createApplication(jobId, applicant);
+    const application = await createApplication(jobId, applicant);
 
     if (!application) {
       return NextResponse.json(

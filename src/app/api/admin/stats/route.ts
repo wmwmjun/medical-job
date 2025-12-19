@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { getDashboardStats } from '@/lib/dataStore';
+import { getDashboardStats } from '@/lib/kvDataStore';
 
 // GET /api/admin/stats - Get dashboard statistics
 export async function GET() {
   try {
-    const stats = getDashboardStats();
+    const stats = await getDashboardStats();
 
     return NextResponse.json({
       success: true,

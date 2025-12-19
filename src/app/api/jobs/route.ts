@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllJobs, searchJobs, createJob } from '@/lib/dataStore';
+import { getAllJobs, searchJobs, createJob } from '@/lib/kvDataStore';
 import { JobCreateRequest } from '@/types';
 
 // CORS headers
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
     let jobs;
     if (hasFilters) {
-      jobs = searchJobs({
+      jobs = await searchJobs({
         specialization: specialization || undefined,
         location: location || undefined,
         jobType: jobType || undefined,
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
         maxSalary: maxSalary ? parseInt(maxSalary) : undefined,
       });
     } else {
-      jobs = getAllJobs(true); // Only active jobs for public API
+      jobs = await getAllJobs(true); // Only active jobs for public API
     }
 
     return NextResponse.json(
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const newJob = createJob(body);
+    const newJob = await createJob(body);
 
     return NextResponse.json(
       {

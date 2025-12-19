@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getJobById, updateJob, deleteJob } from '@/lib/dataStore';
+import { getJobById, updateJob, deleteJob } from '@/lib/kvDataStore';
 import { JobUpdateRequest } from '@/types';
 
 // CORS headers
@@ -24,7 +24,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const job = getJobById(id);
+    const job = await getJobById(id);
 
     if (!job) {
       return NextResponse.json(
@@ -67,7 +67,7 @@ export async function PUT(
     const { id } = await params;
     const body: JobUpdateRequest = await request.json();
 
-    const updatedJob = updateJob(id, body);
+    const updatedJob = await updateJob(id, body);
 
     if (!updatedJob) {
       return NextResponse.json(
@@ -108,7 +108,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const deleted = deleteJob(id);
+    const deleted = await deleteJob(id);
 
     if (!deleted) {
       return NextResponse.json(

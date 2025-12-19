@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getJobsForPartner } from '@/lib/dataStore';
+import { getJobsForPartner } from '@/lib/kvDataStore';
 
 // CORS headers for partner API
 const corsHeaders = {
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = Math.min(parseInt(searchParams.get('limit') || '10'), 100); // Max 100 per request
 
-    const result = getJobsForPartner(page, limit);
+    const result = await getJobsForPartner(page, limit);
 
     return NextResponse.json(
       {
