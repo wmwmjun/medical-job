@@ -7,6 +7,21 @@ import {
 } from '@/lib/dataStore';
 import { ApplicationStatus } from '@/types';
 
+// CORS headers
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+// OPTIONS /api/applications - Handle CORS preflight requests
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/applications - Get all applications with optional filters
 export async function GET(request: NextRequest) {
   try {
@@ -24,11 +39,14 @@ export async function GET(request: NextRequest) {
       applications = getAllApplications();
     }
 
-    return NextResponse.json({
-      success: true,
-      data: applications,
-      timestamp: new Date().toISOString(),
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        data: applications,
+        timestamp: new Date().toISOString(),
+      },
+      { headers: corsHeaders }
+    );
   } catch (error) {
     console.error('Error fetching applications:', error);
     return NextResponse.json(
@@ -37,7 +55,7 @@ export async function GET(request: NextRequest) {
         error: 'Failed to fetch applications',
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
@@ -55,7 +73,7 @@ export async function POST(request: NextRequest) {
           error: 'Missing jobId or applicant data',
           timestamp: new Date().toISOString(),
         },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -69,7 +87,7 @@ export async function POST(request: NextRequest) {
             error: `Missing required field: ${field}`,
             timestamp: new Date().toISOString(),
           },
-          { status: 400 }
+          { status: 400, headers: corsHeaders }
         );
       }
     }
@@ -83,7 +101,7 @@ export async function POST(request: NextRequest) {
           error: 'Job not found or not active',
           timestamp: new Date().toISOString(),
         },
-        { status: 404 }
+        { status: 404, headers: corsHeaders }
       );
     }
 
@@ -93,7 +111,7 @@ export async function POST(request: NextRequest) {
         data: application,
         timestamp: new Date().toISOString(),
       },
-      { status: 201 }
+      { status: 201, headers: corsHeaders }
     );
   } catch (error) {
     console.error('Error creating application:', error);
@@ -103,7 +121,7 @@ export async function POST(request: NextRequest) {
         error: 'Failed to create application',
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
