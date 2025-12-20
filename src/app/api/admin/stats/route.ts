@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getDashboardStats } from '@/lib/kvDataStore';
+import { getDashboardStats } from '@/lib/supabaseDataStore';
 
 // GET /api/admin/stats - Get dashboard statistics
 export async function GET() {

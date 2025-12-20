@@ -4,7 +4,7 @@ import {
   getApplicationsByJobId,
   getApplicationsByStatus,
   createApplication,
-} from '@/lib/kvDataStore';
+} from '@/lib/supabaseDataStore';
 import { ApplicationStatus } from '@/types';
 
 // CORS headers

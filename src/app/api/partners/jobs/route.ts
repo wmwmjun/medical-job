@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getJobsForPartner } from '@/lib/kvDataStore';
+import { getJobsForPartner } from '@/lib/supabaseDataStore';
 
 // CORS headers for partner API
 const corsHeaders = {

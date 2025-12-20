@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getJobById, updateJob, deleteJob } from '@/lib/kvDataStore';
+import { getJobById, updateJob, deleteJob } from '@/lib/supabaseDataStore';
 import { JobUpdateRequest } from '@/types';
 
 // CORS headers
